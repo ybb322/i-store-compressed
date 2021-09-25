@@ -1,0 +1,51 @@
+@font-face {
+  font-family: arimo;
+  src: url(files/fonts/arimo-var.ttf);
+}
+
+body {
+  height: 2000px;
+}
+
+canvas {
+  background: rgb(18, 18, 18);
+  background: radial-gradient(circle, rgb(3, 5, 19) 0%, rgb(0, 0, 0) 93%);
+}
+
+.slide-number {
+  /* display: none; */
+  position: absolute;
+  color: #8a8a8a;
+  font-weight: 300;
+  top: 10vw;
+  left: 46.5vw;
+  font-size: 2.5vw;
+  cursor: pointer;
+}
+.go-right,
+.go-left {
+  font-size: 6vw;
+  color: rgb(192, 192, 192);
+  font-weight: 300;
+}
+
+.go-right {
+  top: 20vw;
+  left: 95%;
+  position: absolute;
+  text-align: center;
+}
+
+.go-left {
+  top: 20vw;
+  position: absolute;
+  text-align: center;
+}
+
+.go-left:hover {
+  cursor: pointer;
+}
+
+.go-right:hover {
+  cursor: pointer;
+}
