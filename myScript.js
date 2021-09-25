@@ -590,7 +590,7 @@ function slideNumber() {
 }
 slideNumber();
 
-let ambient = new THREE.AmbientLight (0xffffff, 1)
+let ambient = new THREE.AmbientLight (0xffffff, 0.1)
 scene.add(ambient)
 
 })
