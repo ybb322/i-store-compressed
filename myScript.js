@@ -65,11 +65,11 @@ function loadingScreenFade () {
     }
 }
 //LOADING MANAGER ONLOAD LISTENER
-// manager.onLoad = function () {
-//     body.classList.remove('overflow')
-//     loadingScreenOpacity.start();
-//     loadingScreenFade();
-// }
+manager.onLoad = function () {
+    body.classList.remove('overflow')
+    loadingScreenOpacity.start();
+    loadingScreenFade();
+}
 
 // HZ CHE ETO
 renderer.shadowMap.enabled = true;
