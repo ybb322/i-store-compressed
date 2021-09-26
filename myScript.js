@@ -4,12 +4,25 @@ import {GLTFLoader} from './examples/jsm/loaders/GLTFLoader.js';
 import {RGBELoader} from './examples/jsm/loaders/RGBELoader.js';
 import {DRACOLoader} from './examples/jsm/loaders/DRACOLoader.js';
 import {MeshoptDecoder} from './examples/jsm/libs/meshopt_decoder.module.js';
-
-const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth / 4000, 0.1, 1000);
 // import {OrbitControls} from './examples/jsm/controls/OrbitControls.js';
 
+// SCENE, CAMERA, RENDERER
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth / 4000, 0.1, 1000);
+const renderer = new THREE.WebGLRenderer({
+    antialias:true,
+    alpha: true
+});
+const container = document.querySelector('body');
+renderer.setSize(window.innerWidth, 4000 );
+container.appendChild(renderer.domElement);
 
+// const orbits = new OrbitControls(camera, renderer.domElement);
+
+//LOADING MANAGER
+const manager = new THREE.LoadingManager();
+
+// RGBE LOADER
 new RGBELoader()
 .setPath('files/')
 .load('moonless_golf_1k.hdr', function (texture){
@@ -18,31 +31,54 @@ new RGBELoader()
     // scene.background = texture
 })
 
+//DRACO LOADER + DECODER
 const loaderDRACO = new DRACOLoader();
 loaderDRACO.setDecoderPath('./examples/js/libs/draco/');
 loaderDRACO.preload()
 
-const loaderGLTF = new GLTFLoader();
+//GLTF LOADER + DECODER
+const loaderGLTF = new GLTFLoader(manager);
 loaderGLTF.setDRACOLoader(loaderDRACO);
 loaderGLTF.setMeshoptDecoder(MeshoptDecoder);
 
-const renderer = new THREE.WebGLRenderer({
-    antialias:true,
-    alpha: true
-});
-const container = document.querySelector('body');
-renderer.setSize(window.innerWidth, 4000 );
-container.prepend(renderer.domElement);
-
+// DOM EVENTS LIB
 let domEvents = new THREEx.DomEvents(camera, renderer.domElement);
 
 
+const goLeft = document.querySelector('.go-left');
+const goRight = document.querySelector('.go-right');
+const slide = document.querySelector('.slide-number');
+const canvas = document.querySelector('canvas')
+const body = document.querySelector('body');
+const loadingScreen = document.querySelector('.loading-screen')
+loadingScreen.style.opacity = 1;
+
+//TWEEN LOADING SCREEN OPACITY
+let loadingScreenOpacity = new TWEEN.Tween(loadingScreen.style).to({opacity:0},500).easing(TWEEN.Easing.Exponential.Out)
+function loadingScreenFade () {
+    requestAnimationFrame(loadingScreenFade);
+    loadingScreenOpacity.update();
+    if (loadingScreen.style.opacity == 0) {
+        // goRight.style.zIndex = 8;
+        // goLeft.style.zIndex = 8;
+        loadingScreen.style.display = 'none';
+    }
+}
+//LOADING MANAGER ONLOAD LISTENER
+// manager.onLoad = function () {
+//     body.classList.remove('overflow')
+//     loadingScreenOpacity.start();
+//     loadingScreenFade();
+// }
+
+// HZ CHE ETO
 renderer.shadowMap.enabled = true;
 renderer.outputEncoding = THREE.LinearEncoding;
 
+//SCROLL VARIABLES
+
 let scrolled = 0;
 let scrollable = 1;
-// const orbits = new OrbitControls(camera, renderer.domElement);
 
 //DETECTOR BOXES MATERIAL
 const material = new THREE.MeshStandardMaterial({ color: 0xf45544, transparent: true });
@@ -62,7 +98,7 @@ const material = new THREE.MeshStandardMaterial({ color: 0xf45544, transparent: 
 
 
 let iMac;
-    loaderGLTF.load('./files/imac/scene.glb', function (gltf) {
+    loaderGLTF.load('./files/imac/scene.glb', function (gltf){
     iMac = gltf.scene;
     scene.add(iMac);
     iMac.position.x = 28;
@@ -445,9 +481,7 @@ let airPods;
 // let ambLightNew = new THREE.AmbientLight(0xfcffd9, 2);
 // scene.add(ambLightNew);
 
-const goLeft = document.querySelector('.go-left');
-const goRight = document.querySelector('.go-right');
-const slide = document.querySelector('.slide-number');
+
 
 window.addEventListener ('scroll', function (){
     scrolled = window.scrollY;
