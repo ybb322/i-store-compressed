@@ -419,7 +419,7 @@ let airPods;
     })
 
     scene.position.y = 10;
-    camera.position.x = 26;
+    camera.position.x = 0;
     camera.position.z = 17;
     
     camera.rotation.x = 0;
