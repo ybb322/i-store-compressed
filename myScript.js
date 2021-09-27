@@ -19,6 +19,14 @@ container.appendChild(renderer.domElement);
 
 // const orbits = new OrbitControls(camera, renderer.domElement);
 
+//RAYCASTER
+let raycaster, mouse;
+let currentIntersection = null;
+let selectedItem = null;
+
+raycaster = new THREE.Raycaster();
+mouse = new THREE.Vector2();
+
 //LOADING MANAGER
 const manager = new THREE.LoadingManager();
 
@@ -113,7 +121,6 @@ loaderGLTF.load('./files/macbook_old/scene_pack.glb', function (gltf) {
     iMacBox.position.z = iMac.position.z;
     iMacBox.position.y = iMac.position.y + 1;
     iMacBox.rotation.x = iMac.rotation.x;
-    console.log(iMac)
 
     let macBook;
     loaderGLTF.load('./files/macbook_old/scene_pack.glb', function (gltf) {
@@ -169,7 +176,7 @@ loaderGLTF.load('./files/macbook_old/scene_pack.glb', function (gltf) {
                     loaderGLTF.load('./files/airpods/source/airpodblendswap.glb', function (gltf) {
                         airPods = gltf.scene;
                         scene.add(airPods);
-                        airPods.scale.set(0.2, 0.2, 0.2)
+                        airPods.scale.set(0.25, 0.25, 0.25)
                         airPods.position.x = -28;
                         airPods.rotation.x = 1;
                         airPods.position.y = -0.5;
@@ -190,6 +197,40 @@ loaderGLTF.load('./files/macbook_old/scene_pack.glb', function (gltf) {
                                 child.material.recieveShadow = true;
                             }
                         })
+                        //RAYCASTER EVENT
+                        renderer.domElement.addEventListener('mouseup', onMouseMove, false);
+
+                        //RAYCASTER FUNCTION
+                        function onMouseMove(event) {
+                            mouse.x = (event.clientX / renderer.domElement.clientWidth) * 2 - 1;
+                            mouse.y = -(event.clientY / renderer.domElement.clientHeight) * 2 + 1;
+                            raycaster.setFromCamera(mouse, camera);
+                            const intersects = raycaster.intersectObject(airPods, true);
+                            if (intersects.length > 0) {
+                                //открывается крышка
+                            if (airPods.children[4].rotation.x == 0) {
+                                tweenCapOpen.start();
+                                FtweenCapOpen();
+                            }
+                            //вылетает первый наушник
+                            if (airPods.children[4].rotation.x == -2 && airPods.children[0].position.y == -3.7) {
+                                tweenAirPodOut.start();
+                                FtweenAirPodOut();
+                            }
+                            //вылетает второй наушник
+                            if (airPods.children[4].rotation.x == -2 && airPods.children[0].position.y == 1 && airPods.children[1].position.y == 3.6500000000000004) {
+                                tweenAirPodSecOut.start();
+                                FtweenAirPodSecOut();
+                            }
+                            //залетают оба, закрывается крышка
+                            if (airPods.children[4].rotation.x == -2 && airPods.children[0].position.y == 1 && airPods.children[1].position.y == 8) {
+                                tweenAirPodBack.start();
+                                tweenAirPodSecBack.start();
+                                tweenCapClose.start();
+                                FtweenBothAirpodsBack();
+                            }
+                            }
+                          }
 
                         //AIRPODS LIGHT
                         const spotLight1 = new THREE.SpotLight(0xffdfb8, 0.5);
@@ -223,35 +264,6 @@ loaderGLTF.load('./files/macbook_old/scene_pack.glb', function (gltf) {
                         spotLight3.penumbra = 0.8;
                         spotLight3.target.position.set(26, 0, 0);
                         scene.add(spotLight3.target)
-
-
-                        // MOUSEMOVE EVENT
-
-                        //AIRPODS HOVER
-                        domEvents.addEventListener(airPods, 'click', function () {
-                            //открывается крышка
-                            if (airPods.children[4].rotation.x == 0) {
-                                tweenCapOpen.start();
-                                FtweenCapOpen();
-                            }
-                            //вылетает первый наушник
-                            if (airPods.children[4].rotation.x == -2 && airPods.children[0].position.y == -3.7) {
-                                tweenAirPodOut.start();
-                                FtweenAirPodOut();
-                            }
-                            //вылетает второй наушник
-                            if (airPods.children[4].rotation.x == -2 && airPods.children[0].position.y == 1 && airPods.children[1].position.y == 3.6500000000000004) {
-                                tweenAirPodSecOut.start();
-                                FtweenAirPodSecOut();
-                            }
-                            //залетают оба, закрывается крышка
-                            if (airPods.children[4].rotation.x == -2 && airPods.children[0].position.y == 1 && airPods.children[1].position.y == 8) {
-                                tweenAirPodBack.start();
-                                tweenAirPodSecBack.start();
-                                tweenCapClose.start();
-                                FtweenBothAirpodsBack();
-                            }
-                        })
 
                         //TWEEN AIRPODS PARTS
                         let tweenCapOpen = new TWEEN.Tween(airPods.children[4].rotation).to({ x: -2 }, 1000).easing(TWEEN.Easing.Exponential.Out)
@@ -287,17 +299,17 @@ loaderGLTF.load('./files/macbook_old/scene_pack.glb', function (gltf) {
                         const airPodsMaxGeo = new THREE.BoxGeometry(2.5, 2.7, 1.4);
                         const airPodsMaxBox = new THREE.Mesh(airPodsMaxGeo, material);
                         // scene.add(airPodsMaxBox);
-                        airPodsMaxBox.material.opacity = 0;
+                        airPodsMaxBox.material.opacity = 1;
                         airPodsMaxBox.position.x = airPodsMax.position.x;
                         airPodsMaxBox.position.y = airPodsMax.position.y + 0.6;
 
                         //AIRPODS DETECTOR BOX
                         const airPodsGeo = new THREE.BoxGeometry(1.2, 1.2, 0.7);
                         const airPodsBox = new THREE.Mesh(airPodsGeo, material);
-                        scene.add(airPodsBox);
                         airPodsBox.position.x = airPods.position.x;
                         airPodsBox.position.y = airPods.position.y + 0.6;
                         airPodsBox.rotation.x = airPods.rotation.x;
+                        // scene.add(airPodsBox);
                         //DETECTOR BOXES ROTATION
                         function BoxRotation() {
                             requestAnimationFrame(BoxRotation);
@@ -420,7 +432,7 @@ loaderGLTF.load('./files/macbook_old/scene_pack.glb', function (gltf) {
                         })
 
                         scene.position.y = 10;
-                        camera.position.x = 0;
+                        camera.position.x = -26;
                         camera.position.z = 17;
 
                         camera.rotation.x = 0;
@@ -447,11 +459,6 @@ loaderGLTF.load('./files/macbook_old/scene_pack.glb', function (gltf) {
 
                             //AIRPODS YYY SCROLL
                             if (camera.position.x == -26) {
-                                airPodsBox.rotation.x = airPods.rotation.x
-                                airPodsBox.position.x = airPods.position.x;
-                                airPodsBox.position.y = airPods.position.y + 0.6;
-                                airPodsBox.position.z = airPods.position.z;
-
                                 airPodsMaxBox.rotation.x = airPodsMax.rotation.x;
                                 airPodsMaxBox.position.x = airPodsMax.position.x;
                                 airPodsMaxBox.position.y = airPodsMax.position.y + 0.6;
