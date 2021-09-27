@@ -191,8 +191,38 @@ let airPods;
         }
     })
 
-   
+    //AIRPODS LIGHT
+    const spotLight1 = new THREE.SpotLight( 0xffdfb8, 0.7 );
+    spotLight1.position.set( -26, 5, 15 );
+    spotLight1.angle = 0.80;
+    spotLight1.penumbra = 0.8;
+    scene.add( spotLight1 );
+    spotLight1.target.position.set (-26,0,0);
+    scene.add(spotLight1.target)
+
+
+    //IPHONES LIGHT
+    const spotLight2= new THREE.SpotLight( 0xffdfb8, 2 );
+
+    spotLight2.angle = 0.6;
+    scene.add( spotLight2 );
+    spotLight2.target.position.set (0,8,0);
+    scene.add(spotLight2.target)
+    spotLight2.penumbra = 0.8;
+
+    spotLight2.position.z = 25;
+    spotLight2.angle = 0.8 + scrolled / 5000
+    spotLight2.intensity = 2 - scrolled / 3000
     
+    //MACBOOKS LIGHT
+    const spotLight3= new THREE.SpotLight( 0xffdfb8, 7 );
+    spotLight3.position.set( 26, 5, 15 );
+    spotLight3.angle = 0.75;
+    scene.add( spotLight3 );
+    spotLight3.penumbra = 0.8;
+    spotLight3.target.position.set (26,0,0);
+    scene.add(spotLight3.target)
+
         
     // MOUSEMOVE EVENT
 
@@ -389,7 +419,7 @@ let airPods;
     })
 
     scene.position.y = 10;
-    camera.position.x = 0;
+    camera.position.x = 26;
     camera.position.z = 17;
     
     camera.rotation.x = 0;
@@ -417,7 +447,11 @@ let airPods;
             iPhone13two.position.x = 3.5
             iPhone13.position.x = -3.5;
         }
-        
+        spotLight2.position.z = 25;
+        spotLight2.position.y = iPhone13.position.y;
+        spotLight2.angle = 0.8 + scrolled / 5000
+        spotLight2.intensity = 2 - scrolled / 3000
+
         }
 
         //AIRPODS YYY SCROLL
@@ -638,33 +672,16 @@ slideNumber();
 let ambient = new THREE.AmbientLight (0xffffff, 0.2)
 scene.add(ambient)
 
-const spotLight1 = new THREE.SpotLight( 0xffdfb8, 0.5 );
-spotLight1.position.set( -26, 5, 15 );
-spotLight1.angle = 0.80;
-scene.add( spotLight1 );
-spotLight1.target.position.set (-26,0,0);
-scene.add(spotLight1.target)
+
 
 // const spotLightHelper1 = new THREE.SpotLightHelper( spotLight1 );
 // scene.add( spotLightHelper1 );
 
-const spotLight2= new THREE.SpotLight( 0xffdfb8, 2 );
-spotLight2.position.set( 0, 0, 17 );
-spotLight2.angle = 0.6;
-scene.add( spotLight2 );
-spotLight2.target.position.set (0,8,0);
-scene.add(spotLight2.target)
-spotLight2.penumbra = 0.8;
+
 
 // const spotLightHelper2 = new THREE.SpotLightHelper( spotLight2 );
 // scene.add( spotLightHelper2 );
 
-const spotLight3= new THREE.SpotLight( 0xffdfb8, 4 );
-spotLight3.position.set( 26, 5, 15 );
-spotLight3.angle = 0.75;
-scene.add( spotLight3 );
-spotLight3.target.position.set (26,0,0);
-scene.add(spotLight3.target)
 
 // const spotLightHelper3 = new THREE.SpotLightHelper( spotLight3 );
 // scene.add( spotLightHelper3 );
