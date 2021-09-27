@@ -105,22 +105,14 @@ const material = new THREE.MeshStandardMaterial({ color: 0xf45544, transparent: 
 //     })
 
 
-let iMac;
-loaderGLTF.load('./files/macbook_old/scene_pack.glb', function (gltf) {
-    iMac = gltf.scene;
-    scene.add(iMac);
-    iMac.position.x = 28;
-    iMac.position.y = -0.2;
-    iMac.scale.set(7, 7, 7)
-    iMac.rotation.x = 0.8;
-    // iMac.rotation.y = Math.PI
-    const iMacGeo = new THREE.BoxGeometry(2, 1.9, 1.5);
-    const iMacBox = new THREE.Mesh(iMacGeo, material);
-    // scene.add(iMacBox);
-    iMacBox.position.x = iMac.position.x;
-    iMacBox.position.z = iMac.position.z;
-    iMacBox.position.y = iMac.position.y + 1;
-    iMacBox.rotation.x = iMac.rotation.x;
+let macBookTwo;
+loaderGLTF.load('./files/macbook_old_two/scene_pack.glb', function (gltf) {
+    macBookTwo = gltf.scene;
+    scene.add(macBookTwo);
+    macBookTwo.position.x = 28;
+    macBookTwo.position.y = -0.2;
+    macBookTwo.scale.set(7, 7, 7)
+    macBookTwo.rotation.x = 0.8;
 
     let macBook;
     loaderGLTF.load('./files/macbook_old/scene_pack.glb', function (gltf) {
@@ -295,146 +287,9 @@ loaderGLTF.load('./files/macbook_old/scene_pack.glb', function (gltf) {
                             tweenCapOpen.update();
                         };
 
-                        //AIRPODS-MAX DETECTOR BOX
-                        const airPodsMaxGeo = new THREE.BoxGeometry(2.5, 2.7, 1.4);
-                        const airPodsMaxBox = new THREE.Mesh(airPodsMaxGeo, material);
-                        // scene.add(airPodsMaxBox);
-                        airPodsMaxBox.material.opacity = 1;
-                        airPodsMaxBox.position.x = airPodsMax.position.x;
-                        airPodsMaxBox.position.y = airPodsMax.position.y + 0.6;
-
-                        //AIRPODS DETECTOR BOX
-                        const airPodsGeo = new THREE.BoxGeometry(1.2, 1.2, 0.7);
-                        const airPodsBox = new THREE.Mesh(airPodsGeo, material);
-                        airPodsBox.position.x = airPods.position.x;
-                        airPodsBox.position.y = airPods.position.y + 0.6;
-                        airPodsBox.rotation.x = airPods.rotation.x;
-                        // scene.add(airPodsBox);
-                        //DETECTOR BOXES ROTATION
-                        function BoxRotation() {
-                            requestAnimationFrame(BoxRotation);
-                            iMacBox.rotation.y += 0.01;
-                            airPodsBox.rotation.y -= 0.01;
-                            airPodsMaxBox.rotation.y += 0.01;
-                            macBookBox.rotation.y -= 0.01;
-                        }
-                        BoxRotation()
-
-                        //TWEEN IMAC SIZE 
-                        let tweeniMacBigger = new TWEEN.Tween(iMac.scale).to({ x: 4, y: 4, z: 4 }, 250).easing(TWEEN.Easing.Exponential.Out);
-                        let tweeniMacSmaller = new TWEEN.Tween(iMac.scale).to({ x: 3, y: 3, z: 3 }, 250).easing(TWEEN.Easing.Exponential.Out)
-
-                        function FtweeniMacSmaller() {
-                            requestAnimationFrame(FtweeniMacSmaller);
-                            tweeniMacSmaller.update();
-                        }
-
-                        function FtweeniMacBigger() {
-                            requestAnimationFrame(FtweeniMacBigger);
-                            tweeniMacBigger.update();
-                        }
-
-                        //IMAC BOX LISTENERS
-                        domEvents.addEventListener(iMacBox, 'mouseover', function () {
-                            tweeniMacBigger.start();
-                            FtweeniMacBigger();
-                            iMacBox.scale.set(1.2, 1.4, 1.2)
-                        })
-
-                        domEvents.addEventListener(iMacBox, 'mouseout', function () {
-                            tweeniMacSmaller.start();
-                            FtweeniMacSmaller();
-                            iMacBox.scale.set(1, 1, 1)
-                        })
-
-
-                        //BOX.AIRPODS-MAX.LISTENERS
-                        domEvents.addEventListener(airPodsMaxBox, 'mouseover', function () {
-                            tweenAirPodsMaxBigger.start();
-                            FtweenAirPodsMaxBigger();
-                            airPodsMaxBox.scale.set(1.4, 1.4, 1.4)
-                        })
-
-                        domEvents.addEventListener(airPodsMaxBox, 'mouseout', function () {
-                            tweenAirPodsMaxSmaller.start();
-                            FtweenAirPodsMaxSmaller();
-                            airPodsMaxBox.scale.set(1, 1, 1)
-                        })
-                        //TWEEN AIRPODS-MAX SIZE
-                        let tweenAirPodsMaxBigger = new TWEEN.Tween(airPodsMax.scale).to({ x: 15, y: 15, z: 15 }, 250).easing(TWEEN.Easing.Exponential.Out);
-                        let tweenAirPodsMaxSmaller = new TWEEN.Tween(airPodsMax.scale).to({ x: 12, y: 12, z: 12 }, 250).easing(TWEEN.Easing.Exponential.Out)
-
-                        function FtweenAirPodsMaxSmaller() {
-                            requestAnimationFrame(FtweenAirPodsMaxSmaller);
-                            tweenAirPodsMaxSmaller.update();
-                        }
-
-                        function FtweenAirPodsMaxBigger() {
-                            requestAnimationFrame(FtweenAirPodsMaxBigger);
-                            tweenAirPodsMaxBigger.update();
-                        }
-
-
-                        //BOX.AIRPODS.LISTENERS
-                        domEvents.addEventListener(airPodsBox, 'mouseover', function () {
-                            tweenAirPodsBigger.start();
-                            FtweenAirPodsBigger();
-                            airPodsBox.scale.set(1.4, 1.4, 1.4)
-                        })
-
-                        domEvents.addEventListener(airPodsBox, 'mouseout', function () {
-                            tweenAirPodsSmaller.start();
-                            FtweenAirPodsSmaller();
-                            airPodsBox.scale.set(1, 1, 1)
-                        })
-
-
-
-                        //TWEEN AIRPODS SIZE
-                        let tweenAirPodsBigger = new TWEEN.Tween(airPods.scale).to({ x: 0.3, y: 0.3, z: 0.3 }, 250).easing(TWEEN.Easing.Exponential.Out);
-                        let tweenAirPodsSmaller = new TWEEN.Tween(airPods.scale).to({ x: 0.2, y: 0.2, z: 0.2 }, 250).easing(TWEEN.Easing.Exponential.Out)
-
-                        function FtweenAirPodsSmaller() {
-                            requestAnimationFrame(FtweenAirPodsSmaller);
-                            tweenAirPodsSmaller.update();
-                        }
-
-                        function FtweenAirPodsBigger() {
-                            requestAnimationFrame(FtweenAirPodsBigger);
-                            tweenAirPodsBigger.update();
-                        }
-
-                        //TWEEN MACBOOK SIZE 
-                        let tweenMacBookBigger = new TWEEN.Tween(macBook.scale).to({ x: 8, y: 8, z: 8 }, 250).easing(TWEEN.Easing.Exponential.Out);
-                        let tweenMacBookSmaller = new TWEEN.Tween(macBook.scale).to({ x: 6, y: 6, z: 6 }, 250).easing(TWEEN.Easing.Exponential.Out)
-
-                        function FtweenMacBookSmaller() {
-                            requestAnimationFrame(FtweenMacBookSmaller);
-                            tweenMacBookSmaller.update();
-                        }
-
-                        function FtweenMacBookBigger() {
-                            requestAnimationFrame(FtweenMacBookBigger);
-                            tweenMacBookBigger.update();
-                        }
-
-                        //MACBOOK BOX LISTENERS
-                        domEvents.addEventListener(macBookBox, 'mouseover', function () {
-                            tweenMacBookBigger.start();
-                            FtweenMacBookBigger();
-                            macBookBox.scale.set(1.2, 1.2, 1.2)
-                        })
-
-                        domEvents.addEventListener(macBookBox, 'mouseout', function () {
-                            tweenMacBookSmaller.start();
-                            FtweenMacBookSmaller();
-                            macBookBox.scale.set(1, 1, 1)
-                        })
-
                         scene.position.y = 10;
                         camera.position.x = -26;
                         camera.position.z = 17;
-
                         camera.rotation.x = 0;
 
                         function modelsAnimation() {
@@ -445,7 +300,7 @@ loaderGLTF.load('./files/macbook_old/scene_pack.glb', function (gltf) {
                             airPods.rotation.y -= 0.01;
                             airPodsMax.rotation.y += 0.01;
                             macBook.rotation.y -= 0.01;
-                            iMac.rotation.y += 0.01;
+                            macBookTwo.rotation.y += 0.01;
 
                             // IPHONES YYY SCROLL
                             if (camera.position.x == 0) {
@@ -459,11 +314,6 @@ loaderGLTF.load('./files/macbook_old/scene_pack.glb', function (gltf) {
 
                             //AIRPODS YYY SCROLL
                             if (camera.position.x == -26) {
-                                airPodsMaxBox.rotation.x = airPodsMax.rotation.x;
-                                airPodsMaxBox.position.x = airPodsMax.position.x;
-                                airPodsMaxBox.position.y = airPodsMax.position.y + 0.6;
-                                airPodsMaxBox.position.z = airPodsMax.position.z;
-
                                 airPods.position.x = - 28 + scrolled / -250;
                                 airPodsMax.position.x = -24 + scrolled / 250;
 
@@ -480,10 +330,10 @@ loaderGLTF.load('./files/macbook_old/scene_pack.glb', function (gltf) {
                                 macBookBox.position.y = macBook.position.y + 0.5;
 
                                 macBook.position.x = 24 + scrolled / -250;
-                                iMac.position.x = 28 + scrolled / 250;
+                                macBookTwo.position.x = 28 + scrolled / 250;
 
-                                if (iMac.position.x >= 29.5) {
-                                    iMac.position.x = 29.5;
+                                if (macBookTwo.position.x >= 29.5) {
+                                    macBookTwo.position.x = 29.5;
                                     macBook.position.x = 22.5;
                                 }
                             }
