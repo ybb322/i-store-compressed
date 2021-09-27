@@ -520,20 +520,30 @@ goRight.addEventListener('click', function () {
     }
 })
 
-function renderScene() {
-    requestAnimationFrame(renderScene);
-    renderer.render(scene, camera);
+// function renderScene() {
+//     requestAnimationFrame(renderScene);
+//     renderer.render(scene, camera);
+// }
+// renderScene();
+
+function animate() {
+    requestAnimationFrame( animate );
+    render();
 }
-renderScene();
+animate()
+
+  function render() {
+      renderer.render( scene, camera );
+}
 
 
 //TWEEN TWEEN TWEEN 
 
-var tweenLeftToCenter = new TWEEN.Tween(camera.position).to({x:0},1500).easing(TWEEN.Easing.Circular.Out);
-var tweenCenterToRight = new TWEEN.Tween(camera.position).to({x:26},1500).easing(TWEEN.Easing.Circular.Out);
+var tweenLeftToCenter = new TWEEN.Tween(camera.position).to({x:0},2000).easing(TWEEN.Easing.Circular.Out);
+var tweenCenterToRight = new TWEEN.Tween(camera.position).to({x:26},2000).easing(TWEEN.Easing.Circular.Out);
 
-var tweenRightToCenter = new TWEEN.Tween(camera.position).to({x:0},1500).easing(TWEEN.Easing.Circular.Out);
-var tweenCenterToLeft = new TWEEN.Tween(camera.position).to({x:-26},1500).easing(TWEEN.Easing.Circular.Out);
+var tweenRightToCenter = new TWEEN.Tween(camera.position).to({x:0},2000).easing(TWEEN.Easing.Circular.Out);
+var tweenCenterToLeft = new TWEEN.Tween(camera.position).to({x:-26},2000).easing(TWEEN.Easing.Circular.Out);
 
 
 var tweenLastToVoid = new TWEEN.Tween(camera.position).to({x:49.95},700).easing(TWEEN.Easing.Circular.Out);
