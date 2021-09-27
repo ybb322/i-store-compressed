@@ -98,14 +98,14 @@ const material = new THREE.MeshStandardMaterial({ color: 0xf45544, transparent: 
 
 
 let iMac;
-    loaderGLTF.load('./files/imac/scene.glb', function (gltf){
+    loaderGLTF.load('./files/macbook_old/scene_pack.glb', function (gltf){
     iMac = gltf.scene;
     scene.add(iMac);
     iMac.position.x = 28;
     iMac.position.y = -0.2;
-    iMac.scale.set (3,3,3)
+    iMac.scale.set (7,7,7)
     iMac.rotation.x = 0.8;
-    iMac.rotation.y = Math.PI
+    // iMac.rotation.y = Math.PI
     const iMacGeo = new THREE.BoxGeometry (2,1.9,1.5);
     const iMacBox = new THREE.Mesh(iMacGeo, material);
     // scene.add(iMacBox);
@@ -113,6 +113,7 @@ let iMac;
     iMacBox.position.z = iMac.position.z;
     iMacBox.position.y = iMac.position.y + 1;
     iMacBox.rotation.x = iMac.rotation.x;
+    console.log (iMac)
 
 let macBook;
     loaderGLTF.load('./files/macbook_old/scene_pack.glb', function (gltf){
@@ -624,8 +625,40 @@ function slideNumber() {
 }
 slideNumber();
 
-let ambient = new THREE.AmbientLight (0xffffff, 0.1)
+let ambient = new THREE.AmbientLight (0xffffff, 0.2)
 scene.add(ambient)
+
+const spotLight1 = new THREE.SpotLight( 0xffdfb8, 0.5 );
+spotLight1.position.set( -26, 5, 15 );
+spotLight1.angle = 0.80;
+scene.add( spotLight1 );
+spotLight1.target.position.set (-26,0,0);
+scene.add(spotLight1.target)
+
+// const spotLightHelper1 = new THREE.SpotLightHelper( spotLight1 );
+// scene.add( spotLightHelper1 );
+
+const spotLight2= new THREE.SpotLight( 0xffdfb8, 2 );
+spotLight2.position.set( 0, 0, 17 );
+spotLight2.angle = 0.6;
+scene.add( spotLight2 );
+spotLight2.target.position.set (0,8,0);
+scene.add(spotLight2.target)
+spotLight2.penumbra = 0.8;
+
+// const spotLightHelper2 = new THREE.SpotLightHelper( spotLight2 );
+// scene.add( spotLightHelper2 );
+
+const spotLight3= new THREE.SpotLight( 0xffdfb8, 4 );
+spotLight3.position.set( 26, 5, 15 );
+spotLight3.angle = 0.75;
+scene.add( spotLight3 );
+spotLight3.target.position.set (26,0,0);
+scene.add(spotLight3.target)
+
+// const spotLightHelper3 = new THREE.SpotLightHelper( spotLight3 );
+// scene.add( spotLightHelper3 );
+
 
 })
 })
