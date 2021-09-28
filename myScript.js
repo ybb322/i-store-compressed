@@ -8,6 +8,7 @@ import { MeshoptDecoder } from './examples/jsm/libs/meshopt_decoder.module.js';
 
 // SCENE, CAMERA, RENDERER
 const scene = new THREE.Scene();
+const sceneNew = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / 4000, 0.1, 1000);
 const renderer = new THREE.WebGLRenderer({
 antialias: true,
@@ -19,9 +20,8 @@ container.appendChild(renderer.domElement);
 
 scene.position.y = 10;
 camera.position.x = 0;
-camera.position.z = 150;
-camera.rotation.x = -0.5
-
+camera.position.z = 17
+camera.rotation.x = 0
 
 // const orbits = new OrbitControls(camera, renderer.domElement);
 
@@ -77,7 +77,7 @@ canvas.style.opacity = 0;
 
 //TWEEN LOADING SCREEN OPACITY
 let loadingScreenOpacity = new TWEEN.Tween(loadingScreen.style).to({ opacity: 0 }, 1000).easing(TWEEN.Easing.Exponential.Out);
-let canvasOpacity = new TWEEN.Tween(canvas.style).to({opacity:1},3000).easing(TWEEN.Easing.Exponential.Out);
+let canvasOpacity = new TWEEN.Tween(canvas.style).to({opacity:1},1000).easing(TWEEN.Easing.Exponential.Out);
 
 //FUNCTION LOADING SCREEN OPACITY
 function loadingScreenFade() {
@@ -98,13 +98,12 @@ function FcanvasOpacity () {
 
 //LOADING MANAGER ONLOAD LISTENER
 manager.onLoad = function () {
-camera.position.z = 17;
-camera.rotation.x = 0;
 loadingScreenOpacity.start();
 loadingScreenFade();
 canvasOpacity.start();
 FcanvasOpacity()
 body.classList.remove('overflow')
+renderer.compile(scene,camera)
 }
 
 // HZ CHE ETO
@@ -181,7 +180,6 @@ airPods.position.y = -0.5;
 airPods.children[0].position.y = -3.7;
 airPods.children[1].position.y = 3.6500000000000004;
 airPods.children[4].rotation.x = 0;
-
 
 //AIRPODS TRAVERSE
 airPods.traverse(function (child) {
@@ -351,6 +349,8 @@ scrollable = document.documentElement.scrollHeight - window.innerHeight;
 })
 
 //CAMERA SLIDER
+
+let i = 0;
 goLeft.addEventListener('click', function () {
 if (camera.position.x == 26) {
 tweenRightToCenter.start();
@@ -380,12 +380,132 @@ tweenLastToVoid.start();
 cameraLastToVoid();
 }
 })
+    
+    //TWEEN TWEEN TWEEN 
+    
+    var tweenLeftToCenter = new TWEEN.Tween(camera.position).to({ x: 0 }, 2000).easing(TWEEN.Easing.Circular.Out);
+    var tweenCenterToRight = new TWEEN.Tween(camera.position).to({ x: 26 }, 2000).easing(TWEEN.Easing.Circular.Out);
+    
+    var tweenRightToCenter = new TWEEN.Tween(camera.position).to({ x: 0 }, 2000).easing(TWEEN.Easing.Circular.Out);
+    var tweenCenterToLeft = new TWEEN.Tween(camera.position).to({ x: -26 }, 2000).easing(TWEEN.Easing.Circular.Out);
+    
+    
+    var tweenLastToVoid = new TWEEN.Tween(camera.position).to({ x: 49.95 }, 700).easing(TWEEN.Easing.Circular.Out);
+    var tweenVoidToFirst = new TWEEN.Tween(camera.position).to({ x: -26 }, 700).easing(TWEEN.Easing.Circular.Out);
+    
+    var tweenVoidToLast = new TWEEN.Tween(camera.position).to({ x: 26 }, 700).easing(TWEEN.Easing.Circular.Out);
+    var tweenFirstToVoid = new TWEEN.Tween(camera.position).to({ x: -50 }, 700).easing(TWEEN.Easing.Circular.Out);
+    
+    function cameraVoidToLast() {
+        let rAF = requestAnimationFrame(cameraVoidToLast);
+        if (camera.position.x == -50) {
+            camera.position.x = 50
+        }
+        if (camera.position.x == 50) {
+            tweenVoidToLast.start();
+        }
+        cancelAnimationFrame(rAF);
+        tweenVoidToLast.update();
+    }
+    
+    function cameraFirstToVoid() {
+        requestAnimationFrame(cameraFirstToVoid);
+        tweenFirstToVoid.update()
+        cameraVoidToLast();
+    }
+    
+    
+    function cameraVoidToFirst() {
+        let rAF = requestAnimationFrame(cameraVoidToFirst);
+        if (camera.position.x == 49.95) {
+            camera.position.x = -49.95
+            tweenVoidToFirst.start();
+        }
+        cancelAnimationFrame(rAF);
+        tweenVoidToFirst.update();
+    }
+    
+    
+    function cameraLastToVoid() {
+        requestAnimationFrame(cameraLastToVoid);
+        tweenLastToVoid.update();
+        cameraVoidToFirst();
+    }
+    
+    function cameraMoveFirstToLast() {
+        requestAnimationFrame(cameraMoveFirstToLast);
+        tweenFirstToLast.update();
+    }
+    
+    function cameraMoveLeftToCenter() {
+        requestAnimationFrame(cameraMoveLeftToCenter);
+        tweenLeftToCenter.update();
+        slideNumber()
+    }
+    
+    function cameraMoveCenterToRight() {
+        requestAnimationFrame(cameraMoveCenterToRight);
+        tweenCenterToRight.update();
+        slideNumber()
+    }
+    
+    function cameraMoveRightToCenter() {
+        requestAnimationFrame(cameraMoveRightToCenter);
+        tweenRightToCenter.update();
+        slideNumber()
+    }
+    
+    function cameraMoveCenterToLeft() {
+        requestAnimationFrame(cameraMoveCenterToLeft);
+        tweenCenterToLeft.update();
+        slideNumber()
+    }
+    
+    function cameraMoveLastToFirst() {
+        requestAnimationFrame(cameraMoveLastToFirst);
+        tweenLastToFirst.update();
+    }
+    
+    function slideNumber() {
+        if (camera.position.x == -26) {
+            slide.textContent = ('Slide 1')
+        }
+        if (camera.position.x == 0) {
+            slide.textContent = ('Slide 2');
+        }
+        if (camera.position.x == 26) {
+            slide.textContent = ('Slide 3');
+        }
+    }
+    slideNumber();
+    
+    let ambient = new THREE.AmbientLight(0xffffff, 0.2)
+    scene.add(ambient)
+    
+    
+    
+    // const spotLightHelper1 = new THREE.SpotLightHelper( spotLight1 );
+    // scene.add( spotLightHelper1 );
+    
+    
+    
+    // const spotLightHelper2 = new THREE.SpotLightHelper( spotLight2 );
+    // scene.add( spotLightHelper2 );
+    
+    
+    // const spotLightHelper3 = new THREE.SpotLightHelper( spotLight3 );
+    // scene.add( spotLightHelper3 );
+    
+    
 
-// function renderScene() {
-//     requestAnimationFrame(renderScene);
-//     renderer.render(scene, camera);
-// }
-// renderScene();
+
+})
+})
+})
+})
+})
+})
+
 
 function animate() {
 requestAnimationFrame(animate);
@@ -394,129 +514,5 @@ render();
 animate()
 
 function render() {
-renderer.render(scene, camera);
+    renderer.render(scene, camera);
 }
-
-
-//TWEEN TWEEN TWEEN 
-
-var tweenLeftToCenter = new TWEEN.Tween(camera.position).to({ x: 0 }, 2000).easing(TWEEN.Easing.Circular.Out);
-var tweenCenterToRight = new TWEEN.Tween(camera.position).to({ x: 26 }, 2000).easing(TWEEN.Easing.Circular.Out);
-
-var tweenRightToCenter = new TWEEN.Tween(camera.position).to({ x: 0 }, 2000).easing(TWEEN.Easing.Circular.Out);
-var tweenCenterToLeft = new TWEEN.Tween(camera.position).to({ x: -26 }, 2000).easing(TWEEN.Easing.Circular.Out);
-
-
-var tweenLastToVoid = new TWEEN.Tween(camera.position).to({ x: 49.95 }, 700).easing(TWEEN.Easing.Circular.Out);
-var tweenVoidToFirst = new TWEEN.Tween(camera.position).to({ x: -26 }, 700).easing(TWEEN.Easing.Circular.Out);
-
-var tweenVoidToLast = new TWEEN.Tween(camera.position).to({ x: 26 }, 700).easing(TWEEN.Easing.Circular.Out);
-var tweenFirstToVoid = new TWEEN.Tween(camera.position).to({ x: -50 }, 700).easing(TWEEN.Easing.Circular.Out);
-
-function cameraVoidToLast() {
-let rAF = requestAnimationFrame(cameraVoidToLast);
-if (camera.position.x == -50) {
-camera.position.x = 50
-}
-if (camera.position.x == 50) {
-tweenVoidToLast.start();
-}
-cancelAnimationFrame(rAF);
-tweenVoidToLast.update();
-}
-
-function cameraFirstToVoid() {
-requestAnimationFrame(cameraFirstToVoid);
-tweenFirstToVoid.update()
-cameraVoidToLast();
-}
-
-
-function cameraVoidToFirst() {
-let rAF = requestAnimationFrame(cameraVoidToFirst);
-if (camera.position.x == 49.95) {
-camera.position.x = -49.95
-tweenVoidToFirst.start();
-}
-cancelAnimationFrame(rAF);
-tweenVoidToFirst.update();
-}
-
-
-function cameraLastToVoid() {
-requestAnimationFrame(cameraLastToVoid);
-tweenLastToVoid.update();
-cameraVoidToFirst();
-}
-
-function cameraMoveFirstToLast() {
-requestAnimationFrame(cameraMoveFirstToLast);
-tweenFirstToLast.update();
-}
-
-function cameraMoveLeftToCenter() {
-requestAnimationFrame(cameraMoveLeftToCenter);
-tweenLeftToCenter.update();
-slideNumber()
-}
-
-function cameraMoveCenterToRight() {
-requestAnimationFrame(cameraMoveCenterToRight);
-tweenCenterToRight.update();
-slideNumber()
-}
-
-function cameraMoveRightToCenter() {
-requestAnimationFrame(cameraMoveRightToCenter);
-tweenRightToCenter.update();
-slideNumber()
-}
-
-function cameraMoveCenterToLeft() {
-requestAnimationFrame(cameraMoveCenterToLeft);
-tweenCenterToLeft.update();
-slideNumber()
-}
-
-function cameraMoveLastToFirst() {
-requestAnimationFrame(cameraMoveLastToFirst);
-tweenLastToFirst.update();
-}
-
-function slideNumber() {
-if (camera.position.x == -26) {
-slide.textContent = ('Slide 1')
-}
-if (camera.position.x == 0) {
-slide.textContent = ('Slide 2');
-}
-if (camera.position.x == 26) {
-slide.textContent = ('Slide 3');
-}
-}
-slideNumber();
-
-let ambient = new THREE.AmbientLight(0xffffff, 0.2)
-scene.add(ambient)
-
-
-
-// const spotLightHelper1 = new THREE.SpotLightHelper( spotLight1 );
-// scene.add( spotLightHelper1 );
-
-
-
-// const spotLightHelper2 = new THREE.SpotLightHelper( spotLight2 );
-// scene.add( spotLightHelper2 );
-
-
-// const spotLightHelper3 = new THREE.SpotLightHelper( spotLight3 );
-// scene.add( spotLightHelper3 );
-
-
-})
-})
-})
-})
-})
-})
