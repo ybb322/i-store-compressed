@@ -73,24 +73,38 @@ var gl = canvas.getContext('webgl');
 const texture1 = new THREE.TextureLoader();
 texture1.load('./files/airpods/textures/case_0.png')
 
+canvas.style.opacity = 0;
+
 //TWEEN LOADING SCREEN OPACITY
-let loadingScreenOpacity = new TWEEN.Tween(loadingScreen.style).to({ opacity: 0 }, 500).easing(TWEEN.Easing.Exponential.Out)
+let loadingScreenOpacity = new TWEEN.Tween(loadingScreen.style).to({ opacity: 0 }, 1000).easing(TWEEN.Easing.Exponential.Out);
+let canvasOpacity = new TWEEN.Tween(canvas.style).to({opacity:1},3000).easing(TWEEN.Easing.Exponential.Out);
+
+//FUNCTION LOADING SCREEN OPACITY
 function loadingScreenFade() {
 requestAnimationFrame(loadingScreenFade);
 loadingScreenOpacity.update();
 if (loadingScreen.style.opacity == 0) {
 // goRight.style.zIndex = 8;
 // goLeft.style.zIndex = 8;
-}
 loadingScreen.style.display = 'none';
 }
+}
+
+//FUNCTION CANVAS OPACITY
+function FcanvasOpacity () {
+    requestAnimationFrame(FcanvasOpacity);
+    canvasOpacity.update();
+}
+
 //LOADING MANAGER ONLOAD LISTENER
 manager.onLoad = function () {
 camera.position.z = 17;
 camera.rotation.x = 0;
-body.classList.remove('overflow')
 loadingScreenOpacity.start();
 loadingScreenFade();
+canvasOpacity.start();
+FcanvasOpacity()
+body.classList.remove('overflow')
 }
 
 // HZ CHE ETO
